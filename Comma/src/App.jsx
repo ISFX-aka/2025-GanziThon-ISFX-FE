@@ -7,6 +7,7 @@ import DetailPage from "./pages/DetailPage/DetailPage";
 import MyPage from "./pages/MyPage/MyPage";
 import ResultPage from "./pages/ResultPage/ResultPage";
 import Emotion from "./pages/EnergyScoreForm/1_Emotion";
+import "./App.css";
 
 function App() {
   return (

@@ -1,0 +1,24 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#root {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
