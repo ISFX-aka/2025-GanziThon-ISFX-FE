@@ -13,6 +13,7 @@ body {
   width: 393px;
   height: 852px;
   margin: 0 auto;
+  margin-top: 250px;
   padding: 20px;
   background-color: #fff;
   overflow-wrap: break-word;
@@ -23,6 +24,7 @@ body {
   #root {
     width: 100%;
     height: 100dvh;
+    margin: 0;
   }
 }
 
