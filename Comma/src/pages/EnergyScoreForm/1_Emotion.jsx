@@ -1,29 +1,112 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom"; // React Router v6 이상 기준
 import BottomBar from "../../components/BottomBar";
 
-const emotions = ["서럽다", "행복하다", "피곤하다", "화가난다", "평온하다"];
+const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  margin: 0 auto;
+  border-radius: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
 
-function Emotion() {
+const Content = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Step = styled.div`
+  margin-top: 44px;
+  font-size: 16px;
+  color: #444;
+`;
+
+const Question = styled.div`
+  margin: 60px 0 36px 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #222;
+  text-align: center;
+  line-height: 1.5;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // 모든 선택지를 세로 중앙 정렬
+  align-items: stretch;
+  gap: 14px;
+  width: 90%;
+  margin: 0 auto;
+  height: 370px;
+`;
+
+const EmotionBtn = styled.button`
+  padding: 18px 0;
+  border: none;
+  border-radius: 12px;
+  background: ${({ selected }) => (selected ? "#c0d3ee" : "#DDDFE9")};
+  font-size: 18px;
+  color: #323d4f;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(80, 80, 80, 0.03);
+  transition: background 0.2s;
+`;
+const emotions = [
+  { label: "서럽다", value: 1 },
+  { label: "피곤하다", value: 2 },
+  { label: "평온하다", value: 3 },
+  { label: "행복하다", value: 4 },
+  { label: "신난다", value: 5 },
+];
+export default function Emotion() {
+  const [selected, setSelected] = useState(null);
+  const navigate = useNavigate();
+
+  const handleSelect = (idx) => {
+    setSelected(idx);
+    localStorage.setItem("emotion_level", emotions[idx].value);
+  };
+
+  const handlePrev = () => navigate(-1);
+  const handleNext = () => {
+    if (selected !== null) navigate("/talk");
+  };
+
   return (
-    <div className="emotion-wrapper">
-      <div className="emotion-header">
-        <span>6/1</span>
-        <p>
+    <Wrapper>
+      <Content>
+        <Step>6/1</Step>
+        <Question>
           하루가 끝난 지금,
           <br />
           당신의 감정상태는 어떤가요?
-        </p>
-      </div>
-      <div className="emotion-options">
-        {emotions.map((emotion, idx) => (
-          <button key={idx} className="emotion-btn">
-            {emotion}
-          </button>
-        ))}
-      </div>
-      <BottomBar prevLabel="이전" nextLabel="다음" />
-    </div>
+        </Question>
+        <ButtonGroup>
+          {emotions.map((emo, idx) => (
+            <EmotionBtn
+              key={emo.label}
+              onClick={() => handleSelect(idx)}
+              selected={selected === idx}
+            >
+              {emo.label}
+            </EmotionBtn>
+          ))}
+        </ButtonGroup>
+      </Content>
+      <BottomBar
+        onPrev={handlePrev}
+        onNext={handleNext}
+        nextDisabled={selected === null}
+      />
+    </Wrapper>
   );
 }
-
-export default Emotion;

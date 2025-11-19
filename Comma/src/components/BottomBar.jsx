@@ -1,34 +1,60 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Bar = styled.div`
   width: 100%;
   height: 60px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #e7e7e7;
   background: #fff;
-  padding: 0px 33px;
+  padding: 0px;
   position: absolute;
   bottom: 0;
+  justify-content: center;
 `;
 
 const Btn = styled.button`
   font-size: 17px;
-  background: #e8f0fe;
+  display: inline-block;
+  background: #dddfe9;
   color: #3a506b;
   border: none;
   border-radius: 10px;
-  padding: 9px 26px;
+  padding: 9px 24px;
   cursor: pointer;
+  transition: background 0.3s;
+
+  &.prevBtn {
+    margin-right: 75px;
+  }
+
+  &.nextBtn {
+    margin-left: 84px;
+  }
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      background: #ccc;
+      color: #888;
+      cursor: not-allowed;
+      pointer-events: none;
+    `}
 `;
 
-export default function BottomBar({ onPrev, onNext }) {
+export default function BottomBar({ onPrev, onNext, nextDisabled }) {
   return (
     <Bar>
-      <Btn onClick={onPrev}>이전</Btn>
-      <Btn onClick={onNext}>다음</Btn>
+      <Btn className="prevBtn" onClick={onPrev}>
+        이전
+      </Btn>
+      <Btn
+        className="nextBtn"
+        onClick={nextDisabled ? undefined : onNext}
+        disabled={nextDisabled}
+      >
+        다음
+      </Btn>
     </Bar>
   );
 }
