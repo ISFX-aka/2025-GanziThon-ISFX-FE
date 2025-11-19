@@ -14,6 +14,9 @@ import Area from "./pages/EnergyScoreForm/5_Area";
 import Comment from "./pages/EnergyScoreForm/6_Comment";
 import LoadingPage from "./pages/Loading/LoadingPage";
 import SavingPage from "./pages/Loading/SavingPage";
+import EditProfile from "./pages/MyPage/editProfile";
+import Date from "./pages/MyPage/Date";
+import Delete from "./pages/MyPage/Delete";
 import "./App.css";
 
 function App() {
@@ -33,6 +36,9 @@ function App() {
         <Route path="/comment" element={<Comment />} />
         <Route path="/loading" element={<LoadingPage />} />
         <Route path="/saving" element={<SavingPage />} />
+        <Route path="/edit" element={<EditProfile />} />
+        <Route path="/date" element={<Date />} />
+        <Route path="/delete" element={<Delete />} />
         {/* 필요한 만큼 추가하세요 */}
       </Routes>
     </BrowserRouter>
