@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
+// import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 // SVG 원형 프로그레스 차트
 const CircleWrapper = styled.div`
+  width: 120px;
+  height: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 24px 0 32px 0;
+  margin: 24px auto 32px auto;
+  position: relative;
+  flex-direction: column;
 `;
 const ProgressText = styled.div`
   position: absolute;
@@ -29,9 +33,7 @@ function EnergyCircle({ percent }) {
   const circum = 2 * Math.PI * radius;
   const offset = circum - (normalizedPercent / 100) * circum;
   return (
-    <CircleWrapper
-      style={{ position: "relative", width: "120px", height: "120px" }}
-    >
+    <CircleWrapper>
       <svg width="120" height="120">
         <circle
           cx="60"
@@ -54,9 +56,7 @@ function EnergyCircle({ percent }) {
           style={{ transition: "stroke-dashoffset 1s" }}
         />
       </svg>
-      <ProgressText style={{ position: "absolute", width: "100%" }}>
-        {normalizedPercent}%
-      </ProgressText>
+      <ProgressText>{normalizedPercent}%</ProgressText>
     </CircleWrapper>
   );
 }
@@ -67,7 +67,8 @@ const DateText = styled.div`
   color: #223d59;
   font-weight: bold;
   text-align: center;
-  margin-top: 36px;
+  margin-top: 50px;
+  margin-bottom: 50px;
 `;
 
 const SectionTitle = styled.div`
@@ -76,13 +77,7 @@ const SectionTitle = styled.div`
   font-weight: 700;
   text-align: center;
   margin: 16px 0 4px 0;
-`;
-
-const SmallText = styled.div`
-  font-size: 1em;
-  text-align: center;
-  color: #666;
-  margin-bottom: 10px;
+  margin-top: 30px;
 `;
 
 const JournalText = styled.div`
@@ -94,6 +89,7 @@ const JournalText = styled.div`
 
 const ButtonGroup = styled.div`
   margin: 40px 0 0 0;
+  margin-top: 250px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -126,7 +122,6 @@ const SaveBtn = styled.button`
   cursor: pointer;
 `;
 
-// 로딩 컴포넌트 예시
 const LoadingWrapper = styled.div`
   height: 100vh;
   background: #fff;
@@ -141,27 +136,19 @@ export default function SurveyResultPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
-      try {
-        // 설문 제출 값을 requestBody로 구성해서 POST
-        const requestBody = {
-          /* ...로컬스토리지 등에서 취합... */
-        };
-        const response = await axios.post("/api/records", requestBody);
-        setResult(response.data);
-      } catch (e) {
-        // 에러 처리 (예: 에러페이지 이동)
-        setResult(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
+    setLoading(true);
+    // axios 요청 코드 주석처리, 임시 데이터 삽입
+    setTimeout(() => {
+      setResult({
+        record_date: "2025년 11월 4일",
+        journal: "시험 공부 때문에 힘든 하루였다.",
+        energy_score: 80,
+      });
+      setLoading(false);
+    }, 600);
   }, []);
 
   if (loading) {
-    // 로딩중 화면
     return (
       <LoadingWrapper>
         <div>...</div>
@@ -177,14 +164,14 @@ export default function SurveyResultPage() {
     );
   }
 
-  // response data 예시에서 필요한 값 추출
   const { record_date, journal, energy_score } = result;
 
   return (
     <div
       style={{
         width: "100%",
-        minHeight: "100%",
+        minHeight: "100vh",
+        alignItems: "center",
         background: "#fff",
         padding: 0,
       }}
@@ -197,8 +184,10 @@ export default function SurveyResultPage() {
       <SectionTitle>오늘의 한 줄 일기</SectionTitle>
       <JournalText>&quot;{journal}&quot;</JournalText>
       <ButtonGroup>
-        <PrescribeBtn>AI 처방 생성</PrescribeBtn>
-        <SaveBtn>저장하기</SaveBtn>
+        <PrescribeBtn onClick={() => navigate("/detail")}>
+          AI 처방 생성
+        </PrescribeBtn>
+        <SaveBtn onClick={() => navigate("/saving")}>저장하기</SaveBtn>
       </ButtonGroup>
     </div>
   );
