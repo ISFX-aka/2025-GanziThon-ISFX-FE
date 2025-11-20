@@ -82,7 +82,7 @@ export default function Journal() {
 
   const handleNext = () => {
     if (journal.trim() !== "") {
-      navigate("/loading");
+      navigate("/result");
     }
   };
 

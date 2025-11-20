@@ -63,7 +63,7 @@ function EnergyCircle({ percent }) {
 const PageWrapper = styled.div`
   width: 100%;
   min-height: 100vh;
-  background: #f8f8fa;
+  background: #f8f8f8;
   padding: 0;
 
   @media (max-width: 600px) {
@@ -178,10 +178,28 @@ const NavBtn = styled.button`
   width: 100%;
   cursor: pointer;
 `;
+const LOADING_GIF = "src/assets/img/icons8-도트-로딩.gif";
 
-export default function DetailPage() {
+// styled-components 예시
+const Wrapper = styled.div`
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;
+
+const LoadingImg = styled.img`
+  width: 54px;
+  height: 54px;
+`;
+
+export default function AiResult() {
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
   useEffect(() => {
     const root = document.getElementById("root");
     if (root) root.style.background = "#f8f8fa";
@@ -191,31 +209,47 @@ export default function DetailPage() {
   }, []);
 
   useEffect(() => {
-    setData({
-      record_date: "2025년 11월 4일",
-      journal: "시험 공부 때문에 힘든 하루였다.",
-      energy_score: 80,
-      energy_level: "midium",
-      ai_prescription: {
-        recommendation_text:
-          "오늘은 조금 쉬어가는 시간을 가져보세요. 집에서 가벼운 스트레칭이나 요가를 하면서 몸을 풀어주고, 좋아하는 음악을 들으며 마음을 편안하게 해보세요. 충분한 휴식이 내일의 에너지를 충전해줄 거예요!",
-        journal_explain:
-          "곧 시험이시군요! 오늘 날씨가 흐려서 괜시리 울적했겠어요. 🥲",
-      },
-      weather_log: {
-        location: "강남구",
-        condition: "맑음",
-        temperature: 12.5,
-        pm10: 35,
-      },
-      emotion: "피곤하다",
-      conversation: "적었다",
-      area: "강남구",
-      vehicle: "지하철",
-      congestion: "발 디딜 틈이 없었다",
-    });
+    // 1초 후 데이터 세팅 및 로딩 false 처리
+    const timer = setTimeout(() => {
+      setData({
+        record_date: "2025년 11월 4일",
+        journal: "시험 공부 때문에 힘든 하루였다.",
+        energy_score: 80,
+        energy_level: "midium",
+        ai_prescription: {
+          recommendation_text:
+            "오늘은 조금 쉬어가는 시간을 가져보세요. 집에서 가벼운 스트레칭이나 요가를 하면서 몸을 풀어주고, 좋아하는 음악을 들으며 마음을 편안하게 해보세요. 충분한 휴식이 내일의 에너지를 충전해줄 거예요!",
+          journal_explain:
+            "곧 시험이시군요! 오늘 날씨가 흐려서 괜시리 울적했겠어요. 🥲",
+        },
+        weather_log: {
+          location: "강남구",
+          condition: "맑음",
+          temperature: 12.5,
+          pm10: 35,
+        },
+        emotion: "피곤하다",
+        conversation: "적었다",
+        area: "강남구",
+        vehicle: "지하철",
+        congestion: "발 디딜 틈이 없었다",
+      });
+      setLoading(false);
+    }, 900); // 0.9초 후 데이터+로딩 처리 (원하는 대기 시간 지정 가능)
+    return () => clearTimeout(timer);
   }, []);
 
+  // 처음 로딩중일 때만 로딩 화면
+  if (loading) {
+    return (
+      <Wrapper>
+        <LoadingImg src={LOADING_GIF} alt="로딩중" />
+        <p>결과를 기다리고 있어요</p>
+      </Wrapper>
+    );
+  }
+
+  // 데이터 없을 때도 안전 처리
   if (!data) {
     return (
       <PageWrapper>
@@ -226,6 +260,7 @@ export default function DetailPage() {
     );
   }
 
+  // 실제 결과 화면
   return (
     <PageWrapper>
       <DateText>{data.record_date}</DateText>
@@ -284,8 +319,7 @@ export default function DetailPage() {
         </LargeCard>
       </CardGroup>
       <ButtonRow>
-        <NavBtn onClick={() => navigate("/edit")}>기록 수정하기</NavBtn>
-        <NavBtn onClick={() => navigate("/remove")}>기록 삭제하기</NavBtn>
+        <NavBtn onClick={() => navigate("/main")}>기록 저장하기</NavBtn>
       </ButtonRow>
     </PageWrapper>
   );

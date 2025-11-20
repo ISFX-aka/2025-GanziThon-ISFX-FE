@@ -17,6 +17,7 @@ import SavingPage from "./pages/Loading/SavingPage";
 import EditProfile from "./pages/MyPage/editProfile";
 import Date from "./pages/MyPage/Date";
 import Delete from "./pages/MyPage/Delete";
+import AiResult from "./pages/ResultPage/AiResult";
 import "./App.css";
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
         <Route path="/edit" element={<EditProfile />} />
         <Route path="/date" element={<Date />} />
         <Route path="/delete" element={<Delete />} />
+        <Route path="/airesult" element={<AiResult />} />
         {/* 필요한 만큼 추가하세요 */}
       </Routes>
     </BrowserRouter>

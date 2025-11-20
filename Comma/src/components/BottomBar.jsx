@@ -6,7 +6,7 @@ const Bar = styled.div`
   height: 60px;
   display: flex;
   align-items: center;
-  background: #fff;
+  background: #f8f8f8;
   padding: 0px;
   position: absolute;
   bottom: 0;
@@ -35,7 +35,7 @@ const Btn = styled.button`
   ${({ disabled }) =>
     disabled &&
     css`
-      background: #ccc;
+      background: #eee;
       color: #888;
       cursor: not-allowed;
       pointer-events: none;

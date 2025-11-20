@@ -24,6 +24,9 @@ const ProgressText = styled.div`
   font-size: 1.7em;
   font-weight: 700;
   color: #222;
+  background-color: #f8f8f8;
+  background: transparent; // 필수! (배경색 없이)
+  pointer-events: none; // 클릭방지, SVG와 상호작용 없음
 `;
 
 function EnergyCircle({ percent }) {
@@ -82,7 +85,7 @@ const SectionTitle = styled.div`
 
 const JournalText = styled.div`
   font-size: 1.1em;
-  color: #577;
+  color: #6e7388;
   text-align: center;
   margin-bottom: 20px;
 `;
@@ -129,6 +132,22 @@ const LoadingWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+const LOADING_GIF = "src/assets/img/icons8-도트-로딩.gif";
+
+// styled-components 예시
+const Wrapper = styled.div`
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;
+
+const LoadingImg = styled.img`
+  width: 54px;
+  height: 54px;
+`;
 
 export default function SurveyResultPage() {
   const [result, setResult] = useState(null);
@@ -150,9 +169,11 @@ export default function SurveyResultPage() {
 
   if (loading) {
     return (
-      <LoadingWrapper>
-        <div>...</div>
-      </LoadingWrapper>
+      <Wrapper>
+        <LoadingImg src={LOADING_GIF} alt="로딩중" />
+        <br />
+        <p>결과를 기다리고 있어요</p>
+      </Wrapper>
     );
   }
 
@@ -172,7 +193,7 @@ export default function SurveyResultPage() {
         width: "100%",
         minHeight: "100vh",
         alignItems: "center",
-        background: "#fff",
+        background: "#f8f8f8",
         padding: 0,
       }}
     >
@@ -184,7 +205,7 @@ export default function SurveyResultPage() {
       <SectionTitle>오늘의 한 줄 일기</SectionTitle>
       <JournalText>&quot;{journal}&quot;</JournalText>
       <ButtonGroup>
-        <PrescribeBtn onClick={() => navigate("/detail")}>
+        <PrescribeBtn onClick={() => navigate("/airesult")}>
           AI 처방 생성
         </PrescribeBtn>
         <SaveBtn onClick={() => navigate("/saving")}>저장하기</SaveBtn>
