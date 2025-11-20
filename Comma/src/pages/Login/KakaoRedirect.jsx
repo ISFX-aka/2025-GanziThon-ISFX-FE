@@ -8,7 +8,6 @@ export function KakaoRedirect() {
 
   useEffect(() => {
     if (!code) return;
-    console.log("전송할 인가코드: ", code);
 
     fetch("http://3.36.228.115:8080/api/auth/social/login", {
       method: "POST",
@@ -22,8 +21,10 @@ export function KakaoRedirect() {
       .then((data) => {
         console.log("응답 데이터:", data);
         if (data.data.token) {
-          console.log("토큰:", data.data.token);
-          localStorage.setItem("token", data.data.token);
+          const rawToken = data.data.token;
+          const token = rawToken.replace("Bearer ", "");
+          localStorage.setItem("token", token);
+          console.log("토큰 저장 완료:", token);
           navigate("/main", { replace: true });
         } else {
           console.log("message:", data.message);
