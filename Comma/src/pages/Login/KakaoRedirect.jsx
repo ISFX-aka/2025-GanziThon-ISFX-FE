@@ -15,16 +15,14 @@ export function KakaoRedirect() {
       body: JSON.stringify({ provider: "kakao", code: code }),
     })
       .then((res) => {
-        console.log("응답 상태:", res.status);
         return res.json();
       })
       .then((data) => {
         console.log("응답 데이터:", data);
         if (data.data.token) {
-          const rawToken = data.data.token;
-          const token = rawToken.replace("Bearer ", "");
+          const token = data.data.token;
           localStorage.setItem("token", token);
-          console.log("토큰 저장 완료:", token);
+          console.log("토큰 저장 완료!", token);
           navigate("/main", { replace: true });
         } else {
           console.log("message:", data.message);
