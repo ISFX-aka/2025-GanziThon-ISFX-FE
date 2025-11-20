@@ -7,6 +7,7 @@ import DetailPage from "./pages/DetailPage/DetailPage";
 import MyPage from "./pages/MyPage/MyPage";
 import ResultPage from "./pages/ResultPage/ResultPage";
 import Emotion from "./pages/EnergyScoreForm/1_Emotion";
+import KakaoRedirect from "./pages/Login/KakaoRedirect";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/result" element={<ResultPage />} />
         <Route path="/energy" element={<Emotion />} />
+        <Route path="/auth/kakao/callback" element={<KakaoRedirect />} />
         {/* 필요한 만큼 추가하세요 */}
       </Routes>
     </BrowserRouter>
