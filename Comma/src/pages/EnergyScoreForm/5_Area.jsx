@@ -94,10 +94,10 @@ export default function Area() {
   const handleSelect = (idx) => {
     if (selected === idx) {
       setSelected(null);
-      localStorage.removeItem("active-area");
+      localStorage.removeItem("location");
     } else {
       setSelected(idx);
-      localStorage.setItem("active-area", areas[idx].label);
+      localStorage.setItem("location", areas[idx].label);
     }
   };
 

@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 const LOADING_GIF = "src/assets/img/icons8-도트-로딩.gif";
 
 // styled-components 예시
-const Wrapper = styled.div`
-  background: #fff;
+const LoadingWrapper = styled.div`
+  background: #f8f8f8;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,8 +31,8 @@ export default function LoadingPage() {
   }, [navigate]);
 
   return (
-    <Wrapper>
+    <LoadingWrapper>
       <LoadingImg src={LOADING_GIF} alt="로딩중" />
-    </Wrapper>
+    </LoadingWrapper>
   );
 }

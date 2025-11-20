@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-// import axios from "axios";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-// SVG 원형 프로그레스 차트
 const CircleWrapper = styled.div`
   width: 120px;
   height: 120px;
@@ -14,6 +13,7 @@ const CircleWrapper = styled.div`
   position: relative;
   flex-direction: column;
 `;
+
 const ProgressText = styled.div`
   position: absolute;
   left: 0;
@@ -24,9 +24,8 @@ const ProgressText = styled.div`
   font-size: 1.7em;
   font-weight: 700;
   color: #222;
-  background-color: #f8f8f8;
-  background: transparent; // 필수! (배경색 없이)
-  pointer-events: none; // 클릭방지, SVG와 상호작용 없음
+  background: transparent;
+  pointer-events: none;
 `;
 
 function EnergyCircle({ percent }) {
@@ -64,14 +63,14 @@ function EnergyCircle({ percent }) {
   );
 }
 
-// 주요 결과 텍스트 UI 구성
+// 주요 UI 스타일
 const DateText = styled.div`
   font-size: 1.4em;
   color: #223d59;
   font-weight: bold;
   text-align: center;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-top: 30%;
+  margin-bottom: 30%;
 `;
 
 const SectionTitle = styled.div`
@@ -79,8 +78,7 @@ const SectionTitle = styled.div`
   color: #222;
   font-weight: 700;
   text-align: center;
-  margin: 16px 0 4px 0;
-  margin-top: 30px;
+  margin: 30px 0 11px 0;
 `;
 
 const JournalText = styled.div`
@@ -91,11 +89,10 @@ const JournalText = styled.div`
 `;
 
 const ButtonGroup = styled.div`
-  margin: 40px 0 0 0;
-  margin-top: 250px;
+  margin: 240px 0 0 0;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 14px;
   align-items: center;
 `;
 
@@ -125,23 +122,14 @@ const SaveBtn = styled.button`
   cursor: pointer;
 `;
 
-const LoadingWrapper = styled.div`
+const ResultPageLoadingWrapper = styled.div`
   height: 100vh;
-  background: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const LOADING_GIF = "src/assets/img/icons8-도트-로딩.gif";
-
-// styled-components 예시
-const Wrapper = styled.div`
+  width: 100%;
   background: #fff;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
 `;
 
 const LoadingImg = styled.img`
@@ -149,31 +137,68 @@ const LoadingImg = styled.img`
   height: 54px;
 `;
 
+const LOADING_GIF = "src/assets/img/icons8-도트-로딩.gif";
+
 export default function SurveyResultPage() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // 로컬스토리지에서 request body 값 가져오기
+  function getRequestBody() {
+    //  로컬스토리지에 저장된 값(key)
+    return {
+      emotion_level: Number(localStorage.getItem("emotion_level")),
+      conversation_level: Number(localStorage.getItem("conversation_level")),
+      transport_mode: localStorage.getItem("transport_mode"),
+      congestion_level: Number(localStorage.getItem("congestion_level")),
+      location: localStorage.getItem("location") || "강남구",
+      journal: localStorage.getItem("journal"),
+    };
+  }
+
   useEffect(() => {
-    setLoading(true);
-    // axios 요청 코드 주석처리, 임시 데이터 삽입
-    setTimeout(() => {
-      setResult({
-        record_date: "2025년 11월 4일",
-        journal: "시험 공부 때문에 힘든 하루였다.",
-        energy_score: 80,
-      });
-      setLoading(false);
-    }, 600);
+    async function fetchResult() {
+      setLoading(true);
+      setError("");
+      try {
+        const token = localStorage.getItem("token");
+        const body = getRequestBody();
+        const response = await axios.post(
+          "http://3.36.228.115:8080/api/records",
+          body,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setResult(response.data.data);
+      } catch (e) {
+        setError(
+          e?.response?.data?.message ||
+            "에너지 기록을 불러오는 도중 오류가 발생했습니다."
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchResult();
   }, []);
 
   if (loading) {
     return (
-      <Wrapper>
+      <ResultPageLoadingWrapper>
         <LoadingImg src={LOADING_GIF} alt="로딩중" />
-        <br />
         <p>결과를 기다리고 있어요</p>
-      </Wrapper>
+      </ResultPageLoadingWrapper>
+    );
+  }
+
+  if (error) {
+    return (
+      <ResultPageLoadingWrapper>
+        <div>{error}</div>
+      </ResultPageLoadingWrapper>
     );
   }
 
@@ -185,8 +210,20 @@ export default function SurveyResultPage() {
     );
   }
 
-  const { record_date, journal, energy_score } = result;
-
+  // 명세 응답 구조 반영
+  const {
+    record_date,
+    journal,
+    energy_score,
+    ai_prescription,
+    weather_log,
+    energy_level,
+  } = result;
+  function formatKoreanDate(dateStr) {
+    if (!dateStr) return "";
+    const [year, month, day] = dateStr.split("-");
+    return `${year}년 ${Number(month)}월 ${Number(day)}일`;
+  }
   return (
     <div
       style={{
@@ -197,13 +234,14 @@ export default function SurveyResultPage() {
         padding: 0,
       }}
     >
-      <DateText>{record_date}</DateText>
+      <DateText>{formatKoreanDate(record_date)}</DateText>
       <SectionTitle>
         오늘의 <span style={{ color: "#7daee1" }}>에너지</span> 점수에요
       </SectionTitle>
       <EnergyCircle percent={energy_score} />
       <SectionTitle>오늘의 한 줄 일기</SectionTitle>
       <JournalText>&quot;{journal}&quot;</JournalText>
+      {/* AI 처방, 날씨, 추가 데이터 필요시 카드/추가 컴포넌트 구성 */}
       <ButtonGroup>
         <PrescribeBtn onClick={() => navigate("/airesult")}>
           AI 처방 생성

@@ -73,13 +73,12 @@ export default function Delete() {
   const handleWithdraw = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("access_token");
-      await axios.delete("/api/users/me", {
+      const token = localStorage.getItem("token"); // 본인 서비스에서 토큰 key명이 'access_token'이면 맞춰서 변경!
+      await axios.delete("http://3.36.228.115:8080/api/users/me", {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("탈퇴가 완료되었습니다. 🙏");
-      // 로그아웃 및 리다이렉트
-      // localStorage.clear();
+      localStorage.clear();
       navigate("/");
     } catch (e) {
       const msg = e?.response?.data?.message || "서버에서 오류가 발생했습니다.";

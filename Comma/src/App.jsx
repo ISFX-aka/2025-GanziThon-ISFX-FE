@@ -7,6 +7,7 @@ import DetailPage from "./pages/DetailPage/DetailPage";
 import MyPage from "./pages/MyPage/MyPage";
 import ResultPage from "./pages/ResultPage/ResultPage";
 import Emotion from "./pages/EnergyScoreForm/1_Emotion";
+import KakaoRedirect from "./pages/Login/KakaoRedirect";
 import Talk from "./pages/EnergyScoreForm/2_Talk";
 import Vehicle from "./pages/EnergyScoreForm/3_Vehicle";
 import Crowding from "./pages/EnergyScoreForm/4_Crowding";
@@ -41,6 +42,7 @@ function App() {
         <Route path="/date" element={<Date />} />
         <Route path="/delete" element={<Delete />} />
         <Route path="/airesult" element={<AiResult />} />
+        <Route path="/auth/kakao/callback" element={<KakaoRedirect />} />
         {/* 필요한 만큼 추가하세요 */}
       </Routes>
     </BrowserRouter>

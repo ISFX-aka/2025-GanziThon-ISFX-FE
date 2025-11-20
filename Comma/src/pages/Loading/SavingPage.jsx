@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const SAVING_GIF = "src/assets/img/icons8-구하다.gif";
 
 // styled-components 예시
-const Wrapper = styled.div`
+const SavingWrapper = styled.div`
   background: #fff;
   display: flex;
   justify-content: center;
@@ -25,14 +25,14 @@ export default function SavingPage() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       // 원하는 경로로 이동
-      navigate("/detail");
+      navigate("/main");
     }, 3500); // 3.5초 후 이동
     return () => clearTimeout(timeout);
   }, [navigate]);
 
   return (
-    <Wrapper>
+    <SavingWrapper>
       <SavingImg src={SAVING_GIF} alt="로딩중" />
-    </Wrapper>
+    </SavingWrapper>
   );
 }
