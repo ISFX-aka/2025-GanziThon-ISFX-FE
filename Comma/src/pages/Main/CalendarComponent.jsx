@@ -32,7 +32,7 @@ function CalendarComponent() {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
 
-    fetch(`/api/records?year=${year}&month=${month}`, {
+    fetch(`http://3.36.228.115:8080/api/records?year=${year}&month=${month}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
       }
