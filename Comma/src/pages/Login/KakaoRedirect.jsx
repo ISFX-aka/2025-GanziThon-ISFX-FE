@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import styles from './LoginPage.module.css';
 
 export function KakaoRedirect() {
   const navigate = useNavigate();
@@ -19,12 +20,13 @@ export function KakaoRedirect() {
         return res.json();
       })
       .then((data) => {
-        console.log("서버 응답 데이터:", data);
-        if (data.token) {
-          localStorage.setItem("token", data.token);
+        console.log("응답 데이터:", data);
+        if (data.data.token) {
+          console.log("토큰:", data.data.token);
+          localStorage.setItem("token", data.data.token);
           navigate("/main", { replace: true });
         } else {
-          console.log("에러 메세지:", data.message);
+          console.log("message:", data.message);
           navigate("/", { replace: true });
         }
       })
@@ -34,7 +36,13 @@ export function KakaoRedirect() {
       });
   }, [code, navigate]);
 
-  return <h1>로그인 중입니다...</h1>; // 임시 화면
+  return (
+    <div className={styles.viewport}>
+      <div className={styles.container}>
+        로그인 중입니다...⏳
+      </div>
+    </div>
+  );
 }
 
 export default KakaoRedirect;
