@@ -1,10 +1,12 @@
-import { useNavigate } from 'react-router-dom';
-import CalendarComponent from './CalendarComponent';
-import styles from './MainPage.module.css';
-import mypageIcon from '../../assets/mypage-icon.svg';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import CalendarComponent from "./CalendarComponent";
+import styles from "./MainPage.module.css";
+import mypageIcon from "../../assets/mypage-icon.svg";
 
 function MainPage() {
   const navigate = useNavigate();
+  const [hasTodayRecord, setHasTodayRecord] = useState(false);
 
   return (
     <div className={styles.viewport}>
@@ -13,16 +15,24 @@ function MainPage() {
           src={mypageIcon}
           alt="마이페이지"
           className={styles.mypageIcon}
-          onClick={() => { navigate('/mypage') }}
+          onClick={() => {
+            navigate("/mypage");
+          }}
         />
-        <CalendarComponent />
-        <button className={styles.btn}
-          onClick={() => { navigate('/energy') }}>
-          오늘의 기록 입력하기
-        </button>
+        <CalendarComponent onHasTodayRecordChange={setHasTodayRecord} />
+        {!hasTodayRecord && (
+          <button
+            className={styles.btn}
+            onClick={() => {
+              navigate("/energy");
+            }}
+          >
+            오늘의 기록 입력하기
+          </button>
+        )}
       </div>
     </div>
-  )
+  );
 }
 
 export default MainPage;

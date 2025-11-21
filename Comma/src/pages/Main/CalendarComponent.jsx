@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import "./CalendarComponent.css";
 
-function CalendarComponent() {
+function CalendarComponent({ onHasTodayRecordChange }) {
   const navigate = useNavigate();
   const [scores, setScores] = useState({});
   const [date, setDate] = useState(new Date());
@@ -14,6 +14,15 @@ function CalendarComponent() {
     "2025-11-02": { id: 1002, score: 87 },
     "2025-11-03": { id: 1003, score: 92 },
   };
+
+  // 해당 날짜의 id와 점수 반환
+  function getScore(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const key = `${year}-${month}-${day}`;
+    return scores[key] ?? null;
+  }
 
   const handleDayClick = (clickedDate) => {
     const recordData = getScore(clickedDate);
@@ -77,14 +86,11 @@ function CalendarComponent() {
     fetchScores();
   }, [date]);
 
-  // 해당 날짜의 id와 점수 반환
-  function getScore(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const key = `${year}-${month}-${day}`;
-    return scores[key] ?? null;
-  }
+  // 오늘 기록 존재 여부를 부모에게 알려줌 -> 기록 버튼 유무 결정
+  useEffect(() => {
+    const hasRecord = !!getScore(new Date());
+    onHasTodayRecordChange(hasRecord);
+  }, [scores]);
 
   return (
     <Calendar
