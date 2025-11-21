@@ -42,7 +42,7 @@ export function KakaoRedirect() {
           style={{
             fontFamily: "Pretendard",
             fontSize: "20px",
-            fontWeight: "500"
+            fontWeight: "500",
           }}
         >
           로그인 중입니다...⏳

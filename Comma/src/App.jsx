@@ -8,6 +8,18 @@ import MyPage from "./pages/MyPage/MyPage";
 import ResultPage from "./pages/ResultPage/ResultPage";
 import Emotion from "./pages/EnergyScoreForm/1_Emotion";
 import KakaoRedirect from "./pages/Login/KakaoRedirect";
+import Talk from "./pages/EnergyScoreForm/2_Talk";
+import Vehicle from "./pages/EnergyScoreForm/3_Vehicle";
+import Crowding from "./pages/EnergyScoreForm/4_Crowding";
+import Area from "./pages/EnergyScoreForm/5_Area";
+import Comment from "./pages/EnergyScoreForm/6_Comment";
+import LoadingPage from "./pages/Loading/LoadingPage";
+import SavingPage from "./pages/Loading/SavingPage";
+import EditProfile from "./pages/MyPage/editProfile";
+import Date from "./pages/MyPage/Date";
+import Delete from "./pages/MyPage/Delete";
+import AiResult from "./pages/ResultPage/AiResult";
+import "./App.css";
 
 function App() {
   return (
@@ -19,6 +31,17 @@ function App() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/result" element={<ResultPage />} />
         <Route path="/energy" element={<Emotion />} />
+        <Route path="/talk" element={<Talk />} />
+        <Route path="/vehicle" element={<Vehicle />} />
+        <Route path="/crowding" element={<Crowding />} />
+        <Route path="/area" element={<Area />} />
+        <Route path="/comment" element={<Comment />} />
+        <Route path="/loading" element={<LoadingPage />} />
+        <Route path="/saving" element={<SavingPage />} />
+        <Route path="/edit" element={<EditProfile />} />
+        <Route path="/date" element={<Date />} />
+        <Route path="/delete" element={<Delete />} />
+        <Route path="/airesult" element={<AiResult />} />
         <Route path="/auth/kakao/callback" element={<KakaoRedirect />} />
         {/* 필요한 만큼 추가하세요 */}
       </Routes>

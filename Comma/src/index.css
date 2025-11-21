@@ -6,7 +6,7 @@
 
 body {
   background-color: #eeeeee;
-  font-family: 'Pretendard'; /* 기본 굵기는 Regular(weight: 400) */
+  font-family: "Pretendard"; /* 기본 굵기는 Regular(weight: 400) */
   height: 100vh; /* 전체 뷰포트 높이 */
   margin: 0;
   display: flex;
@@ -16,46 +16,45 @@ body {
 
 #root {
   width: 393px;
-  height: 852px;
+  height: 100%;
   margin: 0 auto;
-  margin-top: 250px;
+
   padding: 20px;
-  background-color: #fff;
+  background-color: #f8f8f8;
   overflow-wrap: break-word;
-  overflow: hidden;
 }
 
 @media (max-width: 480px) {
   #root {
     width: 100%;
-    height: 100dvh;
+
     margin: 0;
   }
 }
 
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-weight: 700;
   font-display: swap;
-  src: url(./fonts/Pretendard-Bold.woff) format('woff');
+  src: url(./fonts/Pretendard-Bold.woff) format("woff");
 }
 
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-weight: 600;
-  src: url(./fonts/Pretendard-SemiBold.woff) format('woff');
+  src: url(./fonts/Pretendard-SemiBold.woff) format("woff");
 }
 
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-weight: 500;
   font-display: swap;
-  src: url(./fonts/Pretendard-Medium.woff) format('woff');
+  src: url(./fonts/Pretendard-Medium.woff) format("woff");
 }
 
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-weight: 400;
   font-display: swap;
-  src: url(./fonts/Pretendard-Regular.woff) format('woff');
+  src: url(./fonts/Pretendard-Regular.woff) format("woff");
 }
