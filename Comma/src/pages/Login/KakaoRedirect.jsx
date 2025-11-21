@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import styles from './LoginPage.module.css';
+import styles from "./LoginPage.module.css";
 
 export function KakaoRedirect() {
   const navigate = useNavigate();
@@ -38,7 +38,15 @@ export function KakaoRedirect() {
   return (
     <div className={styles.viewport}>
       <div className={styles.container}>
-        로그인 중입니다...⏳
+        <p
+          style={{
+            fontFamily: "Pretendard",
+            fontSize: "20px",
+            fontWeight: "500"
+          }}
+        >
+          로그인 중입니다...⏳
+        </p>
       </div>
     </div>
   );
