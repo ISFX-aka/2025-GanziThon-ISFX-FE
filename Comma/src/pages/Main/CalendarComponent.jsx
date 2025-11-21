@@ -8,13 +8,6 @@ function CalendarComponent({ onHasTodayRecordChange }) {
   const [scores, setScores] = useState({});
   const [date, setDate] = useState(new Date());
 
-  const TEMP_SCORES = {
-    // 연동 전 임시 데이터
-    "2025-11-01": { id: 1001, score: 73 },
-    "2025-11-02": { id: 1002, score: 87 },
-    "2025-11-03": { id: 1003, score: 92 },
-  };
-
   // 해당 날짜의 id와 점수 반환
   function getScore(date) {
     const year = date.getFullYear();
@@ -26,20 +19,13 @@ function CalendarComponent({ onHasTodayRecordChange }) {
 
   const handleDayClick = (clickedDate) => {
     const recordData = getScore(clickedDate);
-
-    if (!recordData) {
-      return;
-    }
-
+    if (!recordData) return;
     if (recordData && recordData.id) {
-      console.log("record_id: ", recordData.id);
       navigate("/detail", {
         state: {
           recordId: recordData.id, // 상세조회 api 호출을 위해 record_id 넘기기 (useLocation으로 받기)
         },
       });
-    } else {
-      return;
     }
   };
 
@@ -67,7 +53,6 @@ function CalendarComponent({ onHasTodayRecordChange }) {
         }
 
         const items = Array.isArray(json?.data) ? json.data : [];
-
         const scoreMap = {};
         items.forEach((item) => {
           scoreMap[item.record_date] = {
@@ -75,11 +60,10 @@ function CalendarComponent({ onHasTodayRecordChange }) {
             score: item.energy_score,
           };
         });
-
         setScores(scoreMap);
       } catch (err) {
-        console.error("임시 데이터 사용:", err);
-        setScores(TEMP_SCORES);
+        console.error("서버 통신 실패 또는 네트워크 에러:", err);
+        setScores({}); // 실서비스에서는 빈 데이터로!
       }
     };
 

@@ -70,7 +70,7 @@ const DateText = styled.div`
   font-weight: bold;
   text-align: center;
   margin-top: 30%;
-  margin-bottom: 30%;
+  margin-bottom: 20%;
 `;
 
 const SectionTitle = styled.div`
@@ -89,7 +89,7 @@ const JournalText = styled.div`
 `;
 
 const ButtonGroup = styled.div`
-  margin: 240px 0 0 0;
+  margin: 190px 0 0 0;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -228,7 +228,7 @@ export default function SurveyResultPage() {
     <div
       style={{
         width: "100%",
-        minHeight: "100vh",
+
         alignItems: "center",
         background: "#f8f8f8",
         padding: 0,
