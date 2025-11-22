@@ -9,7 +9,7 @@ export function KakaoRedirect() {
   useEffect(() => {
     if (!code) return;
 
-    fetch("https://3.36.228.115:8080/api/auth/social/login", {
+    fetch("https://2025-ganzi-thon-isfx-fe.vercel.app/api/auth/social/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ provider: "kakao", code: code }),
