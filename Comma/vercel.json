@@ -1,9 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "https://2025-ganzi-thon-isfx-fe.vercel.app/auth/kakao/callback/api/$1"
-    },
-    { "source": "/(.*)", "destination": "/" }
-  ]
-}
