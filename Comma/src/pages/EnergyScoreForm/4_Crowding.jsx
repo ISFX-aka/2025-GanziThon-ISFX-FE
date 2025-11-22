@@ -87,7 +87,7 @@ export default function Congestion() {
     <Wrapper>
       <Content>
         <Step>6/4</Step>
-        <Question>사람들이 얼마나 많이 탔나요?</Question>
+        <Question>혼집도는 어땠나요?</Question>
         <ButtonGroup>
           {congestion.map((c, idx) => (
             <EmotionBtn
