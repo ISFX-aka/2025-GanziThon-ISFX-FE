@@ -162,7 +162,7 @@ const NavBtn = styled.button`
 `;
 
 // 로딩 GIF
-const LOADING_GIF = "src/assets/img/icons8-도트-로딩.gif";
+const LOADING_GIF = "/img/icons8-도트-로딩.gif";
 
 // --------------------------- 렌더 유틸 ---------------------------
 function formatKoreanDate(dateStr) {

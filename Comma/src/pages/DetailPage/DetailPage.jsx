@@ -191,7 +191,7 @@ const ModalBtn = styled.button`
   cursor: pointer;
 `;
 
-const LOADING_GIF = "src/assets/img/icons8-도트-로딩.gif";
+const LOADING_GIF = "/img/icons8-도트-로딩.gif";
 
 function getEmotionText(level) {
   if (level === 5) return "매우 행복";
@@ -335,7 +335,6 @@ export default function DetailPage() {
       if (res.status === 204) {
         alert("기록이 삭제되었습니다.");
         navigate("/main");
-        // 서버 반영을 기다려 0.3초 후 새로고침
         setTimeout(() => {
           window.location.reload();
         }, 300);
@@ -407,7 +406,7 @@ export default function DetailPage() {
           </Modal>
         </Overlay>
       )}
-      {/* 날짜와 화살표 묶음 예시 */}
+      {/* 날짜와 화살표 묶음 */}
       <div
         style={{
           display: "flex",
@@ -419,7 +418,7 @@ export default function DetailPage() {
         }}
       >
         <img
-          src="src/assets/img/Path 1.png"
+          src="/img/Path 1.png"
           alt="뒤로가기"
           style={{
             width: 11,

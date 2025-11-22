@@ -159,7 +159,7 @@ const LoadingImg = styled.img`
   height: 54px;
 `;
 
-const LOADING_GIF = "src/assets/img/icons8-도트-로딩.gif";
+const LOADING_GIF = "/img/icons8-도트-로딩.gif";
 
 function EnergyCircle({ percent }) {
   const radius = 46;
