@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const SAVING_GIF = "src/assets/img/icons8-구하다.gif";
+const SAVING_GIF = "../../assets/img/icons8-구하다.gif";
 
 const SavingWrapper = styled.div`
   background: #fff;
