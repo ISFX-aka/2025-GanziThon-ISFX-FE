@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom"; // React Router v6 이상 기준
+import { useNavigate } from "react-router-dom";
 import BottomBar from "../../components/BottomBar";
 
 const Wrapper = styled.div`
@@ -41,7 +41,7 @@ const Question = styled.div`
 const ButtonGroup = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center; // 모든 선택지를 세로 중앙 정렬
+  justify-content: center;
   align-items: stretch;
   gap: 14px;
   width: 90%;

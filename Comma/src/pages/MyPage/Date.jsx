@@ -127,34 +127,29 @@ export default function Date() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // 날짜 변경 핸들러
   const handleDateChange = (e) => {
     setDate(e.target.value);
   };
 
-  // 기간 선택 핸들러
   const handlePeriodChange = (e) => {
     setPeriod(e.target.value);
   };
 
-  // API 호출 및 페이지 이동
   const handleSave = async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("access_token");
       const params = {
         period,
-        ...(date && { date }), // 입력값 있으면 파라미터 추가
+        ...(date && { date }),
       };
       const response = await axios.get("/api/users/me/status", {
         headers: { Authorization: `Bearer ${token}` },
         params,
       });
-      // response.data를 마이페이지 등에서 활용(필요 시 상태전달/전환)
-      // 예시: navigate("/mypage", { state: { stat: response.data } });
-      navigate(-1); // 모달 닫고 결과 반영 (실제 구현에 맞게 이동/전달 가능)
+
+      navigate(-1);
     } catch (e) {
-      // 에러 처리
       alert("통계 정보를 불러올 수 없습니다.");
     } finally {
       setLoading(false);

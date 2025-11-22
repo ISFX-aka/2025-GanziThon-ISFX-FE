@@ -480,7 +480,7 @@ export default function MyPage() {
         date: dateParam,
       }).toString();
       const res = await fetch(
-        `http://3.36.228.115:8080/api/users/me/status?${query}`,
+        `https://shim.syu-likelion.org/api/users/me/status?${query}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

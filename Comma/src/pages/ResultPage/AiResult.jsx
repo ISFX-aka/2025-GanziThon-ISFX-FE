@@ -288,7 +288,7 @@ export default function AiResult() {
         const token = localStorage.getItem("token");
         const body = getRequestBody();
         const response = await axios.post(
-          "http://3.36.228.115:8080/api/records",
+          "https://shim.syu-likelion.org/api/records",
           body,
           {
             headers: { Authorization: `Bearer ${token}` },

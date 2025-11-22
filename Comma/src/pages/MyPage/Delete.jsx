@@ -69,12 +69,11 @@ export default function Delete() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  // 실제 탈퇴 처리
   const handleWithdraw = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token"); // 본인 서비스에서 토큰 key명이 'access_token'이면 맞춰서 변경!
-      await axios.delete("http://3.36.228.115:8080/api/users/me", {
+      const token = localStorage.getItem("token");
+      await axios.delete("https://shim.syu-likelion.org/api/users/me", {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("탈퇴가 완료되었습니다. 🙏");

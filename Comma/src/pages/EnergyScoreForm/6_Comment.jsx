@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import BottomBar from "../../components/BottomBar";
-
-// 아이콘 예시: src/assets/journal.png에 이미지 파일 넣었다고 가정
 import JournalIcon from "../../assets/img/Writing.png";
 
 const CommentWrapper = styled.div`

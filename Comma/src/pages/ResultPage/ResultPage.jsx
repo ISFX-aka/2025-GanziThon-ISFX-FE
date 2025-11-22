@@ -166,7 +166,7 @@ export default function SurveyResultPage() {
         const token = localStorage.getItem("token");
         const body = getRequestBody();
         const response = await axios.post(
-          "http://3.36.228.115:8080/api/records",
+          "https://shim.syu-likelion.org/api/records",
           body,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -210,7 +210,6 @@ export default function SurveyResultPage() {
     );
   }
 
-  // 명세 응답 구조 반영
   const {
     record_date,
     journal,
@@ -241,7 +240,6 @@ export default function SurveyResultPage() {
       <EnergyCircle percent={energy_score} />
       <SectionTitle>오늘의 한 줄 일기</SectionTitle>
       <JournalText>&quot;{journal}&quot;</JournalText>
-      {/* AI 처방, 날씨, 추가 데이터 필요시 카드/추가 컴포넌트 구성 */}
       <ButtonGroup>
         <PrescribeBtn onClick={() => navigate("/airesult")}>
           AI 처방 생성
