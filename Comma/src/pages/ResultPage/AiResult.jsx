@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import dotloading from "../../assets/img/icons8-도트-로딩.gif";
+import dotLoading from "../../assets/img/icons8-도트-로딩.gif";
 // 스타일 선언부 시작
 
 const PageWrapper = styled.div`
@@ -304,7 +304,7 @@ export default function AiResult() {
   if (loading) {
     return (
       <LoadingWrapper>
-        <LoadingImg src={dotloading} alt="로딩중" />
+        <LoadingImg src={dotLoading} alt="로딩중" />
         <p>결과를 기다리고 있어요</p>
       </LoadingWrapper>
     );
