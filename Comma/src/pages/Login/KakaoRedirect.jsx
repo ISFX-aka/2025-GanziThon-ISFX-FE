@@ -9,7 +9,7 @@ export function KakaoRedirect() {
   useEffect(() => {
     if (!code) return;
 
-    fetch("https://shim.syu-likelion.org/api/auth/social/login", {
+    fetch("http://127.0.0.1:8080/api/auth/social/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ provider: "kakao", code: code }),
