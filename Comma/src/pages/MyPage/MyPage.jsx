@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 // ------ styled-components ------
@@ -9,6 +8,7 @@ const PageWrapper = styled.div`
   min-height: 100vh;
   background: #f8f8fa;
   padding-bottom: 36px;
+  position: relative;
 `;
 
 const Title = styled.div`
@@ -65,6 +65,8 @@ const SectionLabel = styled.div`
   color: #888;
   font-size: 1em;
   margin-bottom: 9px;
+  text-align: center;
+  font-weight: 600;
 `;
 
 const SubValue = styled.div`
@@ -121,6 +123,92 @@ const ProgressText = styled.div`
   color: #222;
 `;
 
+const Overlay = styled.div`
+  position: fixed;
+  z-index: 3000;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(33, 38, 45, 0.23);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ModalBox = styled.div`
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 30px rgba(80, 80, 80, 0.19);
+  padding: 32px 22px 28px 22px;
+  min-width: 260px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+`;
+
+const ModalTitle = styled.div`
+  font-size: 1.11em;
+  font-weight: bold;
+  color: #224;
+  text-align: center;
+  margin-bottom: 14px;
+`;
+
+const ModalClose = styled.button`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.48em;
+  color: #333a;
+  cursor: pointer;
+  z-index: 1;
+`;
+
+const ModalInput = styled.input`
+  width: 90%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 1.07em;
+  border: 1px solid #d9d9e8;
+  margin-bottom: 18px;
+  margin-top: 6px;
+  background: #f8f8fa;
+`;
+
+const Select = styled.select`
+  width: 90%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 1.07em;
+  border: 1px solid #d9d9e8;
+  margin-bottom: 18px;
+  background: #f8f8fa;
+`;
+
+const EnergyList = styled.ul`
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 12px;
+  padding: 0;
+  list-style: none;
+  font-size: 0.95em;
+  color: #333;
+  border-top: 1px solid #ddd;
+`;
+
+const EnergyListItem = styled.li`
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+`;
+
 // ------ 그래프 컴포넌트 ------
 function EnergyCircle({ percent }) {
   const radius = 44;
@@ -157,88 +245,169 @@ function EnergyCircle({ percent }) {
   );
 }
 
-// ------ 날짜 레이블 함수 ------
-function getStatPeriodLabel(start_date, end_date) {
-  if (!start_date || !end_date) return "-";
-  const [sYear, sMonth, sDay] = start_date.split("-");
-  // 2주차 계산(1일~7일 1주, 8~14일 2주...)
-  const week = Math.floor((parseInt(sDay, 10) - 1) / 7) + 1;
-  return `${sYear.slice(2)}년 ${parseInt(sMonth, 10)}월 ${week}주차 통계`;
+function getStatPeriodLabel(startDate, endDate, period) {
+  if (!startDate || !endDate) return "-";
+  if (period === "week") {
+    const [sYear, sMonth, sDay] = startDate.split("-");
+    const week = Math.floor((parseInt(sDay, 10) - 1) / 7) + 1;
+    return `${sYear.slice(2)}년 ${parseInt(sMonth, 10)}월 ${week}주차 통계`;
+  }
+  if (period === "month") {
+    const [sYear, sMonth] = startDate.split("-");
+    return `${sYear.slice(2)}년 ${parseInt(sMonth, 10)}월 통계`;
+  }
+  return "-";
 }
 
-// ------ Main 컴포넌트 ------
 export default function MyPage() {
-  const [user, setUser] = useState(null);
+  const [nickname, setNickname] = useState("닉네임");
+  const [showNickModal, setShowNickModal] = useState(false);
+  const [inputValue, setInputValue] = useState("");
   const [stat, setStat] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showStatModal, setShowStatModal] = useState(false);
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  // 기간 선택 모달 상태
+  const [period, setPeriod] = useState("week");
+  const [date, setDate] = useState(() => {
+    const today = new Date();
+    return today.toISOString().slice(0, 10);
+  });
 
-  // 사용자 info GET
+  // 닉네임(로컬스토리지) 관리
   useEffect(() => {
-    async function fetchUser() {
-      try {
-        const response = await axios.get(
-          "http://3.36.228.115:8080/api/users/me",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        setUser(response.data.data || response.data); // data.data 대응
-      } catch {
-        setUser(null);
-      }
-    }
-    fetchUser();
-  }, [token]);
+    const stored = localStorage.getItem("nickname");
+    if (stored) setNickname(stored);
+  }, []);
 
-  // 통계 GET
-  useEffect(() => {
-    async function fetchStat() {
-      setLoading(true);
-      try {
-        // 오늘 날짜
-        const today = new Date();
-        const ymd = today.toISOString().slice(0, 10);
-        const response = await axios.get(
-          "http://3.36.228.115:8080/api/users/me/status",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-            params: { period: "week", date: ymd },
-          }
-        );
-        setStat(response.data.data || response.data); // data.data 대응
-      } catch {
-        setStat(null);
-      } finally {
+  // API 호출 함수: 통계 조회
+  const fetchStat = async (periodParam, dateParam) => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("로그인 후 이용 가능합니다.");
         setLoading(false);
+        return;
       }
+      const query = new URLSearchParams({
+        period: periodParam,
+        date: dateParam,
+      }).toString();
+      const res = await fetch(
+        `http://3.36.228.115:8080/api/users/me/status?${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.ok) {
+        const resJson = await res.json();
+        setStat(resJson.data); // data 필드만 저장
+      } else {
+        const err = await res.json();
+        alert(err.message || "통계 조회 실패");
+      }
+    } catch (e) {
+      alert("서버에서 오류가 발생했습니다.");
+    } finally {
+      setLoading(false);
     }
-    fetchStat();
-  }, [token]);
+  };
 
-  // 로딩 처리
-  if (loading || !user) {
-    return (
-      <PageWrapper>
-        <StatisticCard>
-          <div>로딩중...</div>
-        </StatisticCard>
-      </PageWrapper>
-    );
-  }
+  // 초기 통계 조회: 오늘 기준 주간 통계
+  useEffect(() => {
+    fetchStat("week", date);
+  }, []);
 
-  // stat 구조 체크 및 안전 처리
   const {
-    average_energy_score = 0,
-    record_count = 0,
-    start_date = "",
-    end_date = "",
+    averageEnergyScore = 0,
+    recordCount = 0,
+    startDate = "",
+    endDate = "",
+    energyTrend = [],
+    period: statPeriod,
   } = stat || {};
+
+  // 닉네임 모달 저장
+  const handleNickSave = () => {
+    const trimmed = inputValue.trim();
+    const nextNick = trimmed ? trimmed : "닉네임";
+    setNickname(nextNick);
+    localStorage.setItem("nickname", nextNick);
+    setShowNickModal(false);
+  };
+
+  // 기간 모달 저장 후 통계 호출
+  const handleStatFetch = () => {
+    fetchStat(period, date);
+    setShowStatModal(false);
+  };
 
   return (
     <PageWrapper>
       <Title>마이페이지</Title>
+
+      {/* 닉네임 수정 모달 */}
+      {showNickModal && (
+        <Overlay onClick={() => setShowNickModal(false)}>
+          <ModalBox onClick={(e) => e.stopPropagation()}>
+            <ModalClose
+              aria-label="닫기"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowNickModal(false);
+              }}
+            >
+              ×
+            </ModalClose>
+            <ModalTitle>닉네임 수정</ModalTitle>
+            <ModalInput
+              maxLength={20}
+              value={inputValue}
+              autoFocus
+              placeholder="새 닉네임 입력"
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+            <NavBtn style={{ marginTop: 4 }} onClick={handleNickSave}>
+              저장
+            </NavBtn>
+          </ModalBox>
+        </Overlay>
+      )}
+
+      {/* 통계 기간 선택 모달 */}
+      {showStatModal && (
+        <Overlay onClick={() => setShowStatModal(false)}>
+          <ModalBox onClick={(e) => e.stopPropagation()}>
+            <ModalClose
+              aria-label="닫기"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowStatModal(false);
+              }}
+            >
+              ×
+            </ModalClose>
+            <ModalTitle>통계 기간 선택</ModalTitle>
+            <SectionLabel>기간 선택</SectionLabel>
+            <Select value={period} onChange={(e) => setPeriod(e.target.value)}>
+              <option value="week">주간</option>
+              <option value="month">월간</option>
+            </Select>
+            <SectionLabel>기준 날짜 선택</SectionLabel>
+            <ModalInput
+              type="date"
+              value={date}
+              max={new Date().toISOString().slice(0, 10)}
+              onChange={(e) => setDate(e.target.value)}
+            />
+            <NavBtn onClick={handleStatFetch}>조회</NavBtn>
+          </ModalBox>
+        </Overlay>
+      )}
+
       <Card>
         <UserProfile>
           <svg width="36" height="36" fill="none" viewBox="0 0 24 24">
@@ -247,19 +416,69 @@ export default function MyPage() {
           </svg>
         </UserProfile>
         <InfoCol>
-          <div style={{ fontWeight: 600, marginBottom: 3 }}>
-            {user?.name || "닉네임"} &gt;
+          <div
+            style={{
+              fontWeight: 600,
+              marginBottom: 3,
+              display: "flex",
+              alignItems: "center",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              setInputValue(nickname);
+              setShowNickModal(true);
+            }}
+          >
+            {nickname}
+            <span
+              style={{
+                fontSize: "1.18em",
+                fontWeight: 800,
+                marginLeft: 6,
+                color: "#868cb7",
+              }}
+            >
+              &gt;
+            </span>
           </div>
-          <div style={{ color: "#888", fontSize: "0.98em" }}>{user?.email}</div>
         </InfoCol>
       </Card>
+
       <StatisticCard>
-        <SectionLabel>{getStatPeriodLabel(start_date, end_date)}</SectionLabel>
-        <EnergyCircle percent={average_energy_score} />
-        <SubValue>총 {record_count}개의 기록이 있어요.</SubValue>
+        <SectionLabel>
+          {getStatPeriodLabel(startDate, endDate, statPeriod)}
+        </SectionLabel>
+        {loading ? (
+          <SubValue>로딩 중...</SubValue>
+        ) : stat ? (
+          <>
+            <EnergyCircle percent={averageEnergyScore} />
+            <SubValue>총 {recordCount}개의 기록이 있어요.</SubValue>
+            <EnergyList>
+              {energyTrend && energyTrend.length > 0 ? (
+                energyTrend.map(({ recordId, recordDate, energyScore }) => (
+                  <EnergyListItem key={recordId}>
+                    <span>{recordDate}</span>
+                    <span>{Math.round(energyScore)}</span>
+                  </EnergyListItem>
+                ))
+              ) : (
+                <EnergyListItem>기록된 에너지 점수가 없습니다.</EnergyListItem>
+              )}
+            </EnergyList>
+          </>
+        ) : (
+          <SubValue>통계가 존재하지 않습니다.</SubValue>
+        )}
+        <NavBtn
+          style={{ marginTop: 20, width: "60%" }}
+          onClick={() => setShowStatModal(true)}
+        >
+          기간별 통계 조회
+        </NavBtn>
       </StatisticCard>
+
       <ButtonGroup>
-        <NavBtn onClick={() => navigate("/edit")}>내 계정 관리</NavBtn>
         <NavBtn onClick={() => navigate("/delete")}>회원 탈퇴</NavBtn>
       </ButtonGroup>
     </PageWrapper>

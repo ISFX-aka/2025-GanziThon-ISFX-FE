@@ -19,6 +19,7 @@ import EditProfile from "./pages/MyPage/editProfile";
 import Date from "./pages/MyPage/Date";
 import Delete from "./pages/MyPage/Delete";
 import AiResult from "./pages/ResultPage/AiResult";
+import EditDetail from "./pages/DetailPage/EditDetail";
 import "./App.css";
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
         <Route path="/delete" element={<Delete />} />
         <Route path="/airesult" element={<AiResult />} />
         <Route path="/auth/kakao/callback" element={<KakaoRedirect />} />
+        <Route path="/editdetail" element={<EditDetail />} />
         {/* 필요한 만큼 추가하세요 */}
       </Routes>
     </BrowserRouter>

@@ -5,7 +5,7 @@
 }
 
 body {
-  background-color: #eeeeee;
+  background-color: #eee;
   font-family: "Pretendard"; /* 기본 굵기는 Regular(weight: 400) */
   height: 100vh; /* 전체 뷰포트 높이 */
   margin: 0;
