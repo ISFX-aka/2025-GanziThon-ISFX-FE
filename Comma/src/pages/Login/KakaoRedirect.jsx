@@ -9,7 +9,7 @@ export function KakaoRedirect() {
   useEffect(() => {
     if (!code) return;
 
-    fetch("api/auth/social/login", {
+    fetch("/api/auth/social/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ provider: "kakao", code: code }),
