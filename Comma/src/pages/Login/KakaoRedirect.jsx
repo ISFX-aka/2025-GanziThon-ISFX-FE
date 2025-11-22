@@ -9,10 +9,10 @@ export function KakaoRedirect() {
   useEffect(() => {
     if (!code) return;
 
-    fetch("https://shim.syu-likelion.org/api/auth/social/login", {
+    fetch("/api/proxy", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ provider: "kakao", code: code }),
+      body: JSON.stringify({ provider: "kakao", code }),
     })
       .then((res) => {
         return res.json();
