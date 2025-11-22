@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import Path from "../../assets/img/Path 1.png";
+import dotloading from "../../assets/img/icons8-도트-로딩.gif";
 const PageWrapper = styled.div`
   width: 100%;
   background: #f8f8fa;
@@ -191,8 +192,6 @@ const ModalBtn = styled.button`
   cursor: pointer;
 `;
 
-const LOADING_GIF = "/img/icons8-도트-로딩.gif";
-
 function getEmotionText(level) {
   if (level === 5) return "매우 행복";
   if (level === 4) return "행복";
@@ -355,7 +354,7 @@ export default function DetailPage() {
   if (loading) {
     return (
       <LoadingPageWrapper>
-        <img src={LOADING_GIF} alt="로딩중" style={{ marginTop: 14 }} />
+        <img src={dotloading} alt="로딩중" style={{ marginTop: 14 }} />
         <div style={{ marginTop: 9 }}>기록을 불러오는 중...</div>
       </LoadingPageWrapper>
     );
@@ -418,7 +417,7 @@ export default function DetailPage() {
         }}
       >
         <img
-          src="/img/Path 1.png"
+          src={Path}
           alt="뒤로가기"
           style={{
             width: 11,
@@ -428,7 +427,7 @@ export default function DetailPage() {
             marginTop: -10,
             cursor: "pointer",
           }}
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/main")}
         />
         <DateText>{formatKoreanDate(record_date)}</DateText>
       </div>

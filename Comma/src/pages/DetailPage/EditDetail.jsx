@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
+import dotloading from "../../assets/img/icons8-도트-로딩.gif";
 
-// --------------------------- styled-components 선언부 ---------------------------
 const PageWrapper = styled.div`
   width: 100%;
   min-height: 100vh;
@@ -344,7 +344,7 @@ export default function EditDetail() {
   if (loading) {
     return (
       <LoadingPageWrapper>
-        <img src={LOADING_GIF} alt="로딩중" style={{ marginTop: 14 }} />
+        <img src={dotloading} alt="로딩중" style={{ marginTop: 14 }} />
         <div style={{ marginTop: 9 }}>기록을 불러오는 중...</div>
       </LoadingPageWrapper>
     );
