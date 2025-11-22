@@ -4,7 +4,8 @@ import kakaoLogo from "../../assets/카카오_로고.svg";
 
 function LoginPage() {
   const REST_API_KEY = import.meta.env.VITE_REST_API_KEY;
-  const REDIRECT_URI = "https://shim.syu-likelion.org/auth/kakao/callback";
+  const REDIRECT_URI =
+    "https://2025-ganzi-thon-isfx-fe.vercel.app/auth/kakao/callback";
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const handleLogin = () => {
