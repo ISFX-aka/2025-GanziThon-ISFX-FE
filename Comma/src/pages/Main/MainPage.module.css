@@ -2,11 +2,11 @@
   margin: -20px;
   width: calc(100% + 40px);
   height: calc(100% + 40px);
-  background-color: #F8F8F8;
+  background-color: #f8f8f8;
 }
 
 .container {
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,8 +19,8 @@
   height: 48px;
   border-radius: 12px;
   border: none;
-  background-color: #6E7388;
-  font-family: 'Pretendard';
+  background-color: #6e7388;
+  font-family: "Pretendard";
   font-size: 16px;
   font-weight: 700;
   color: #fff;
