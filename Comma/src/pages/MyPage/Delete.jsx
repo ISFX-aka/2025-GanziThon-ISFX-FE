@@ -73,7 +73,7 @@ export default function Delete() {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      await axios.delete("https://shim.syu-likelion.org/api/users/me", {
+      await axios.delete("/api/users/me", {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("탈퇴가 완료되었습니다. 🙏");
