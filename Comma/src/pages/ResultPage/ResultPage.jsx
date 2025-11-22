@@ -137,7 +137,7 @@ const LoadingImg = styled.img`
   height: 54px;
 `;
 
-const LOADING_GIF = "src/assets/img/icons8-도트-로딩.gif";
+const LOADING_GIF = "src/assets/img/loading.gif";
 
 export default function SurveyResultPage() {
   const [result, setResult] = useState(null);
