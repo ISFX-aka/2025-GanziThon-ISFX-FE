@@ -331,13 +331,10 @@ export default function DetailPage() {
     setDeleteLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(
-        `http://3.36.228.115:8080/api/records/${data.record_id}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await fetch(`/api/records/${data.record_id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (res.status === 204) {
         alert("기록이 삭제되었습니다.");
         navigate("/main");

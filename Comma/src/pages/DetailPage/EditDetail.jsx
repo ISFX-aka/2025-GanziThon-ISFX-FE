@@ -281,12 +281,9 @@ export default function EditDetail() {
       }
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(
-          `http://3.36.228.115:8080/api/records/${recordId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await fetch(`/api/records/${recordId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const json = await response.json().catch(() => null);
         if (!response.ok) {
           setError(json?.message ?? response.status);
@@ -321,17 +318,14 @@ export default function EditDetail() {
     setError("");
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        `http://3.36.228.115:8080/api/records/${origin.record_id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(form),
-        }
-      );
+      const response = await fetch(`/api/records/${origin.record_id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(form),
+      });
       const json = await response.json().catch(() => null);
       if (!response.ok) {
         setError(json?.message ?? "수정 실패");
