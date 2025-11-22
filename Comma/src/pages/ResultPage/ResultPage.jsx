@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import loading from "../../assets/img/loading.gif";
+import loadingGif from "../../assets/img/loading.gif";
 
 const CircleWrapper = styled.div`
   width: 120px;
@@ -183,7 +183,7 @@ export default function SurveyResultPage() {
   if (loading) {
     return (
       <ResultPageLoadingWrapper>
-        <LoadingImg src={loading} alt="로딩중" />
+        <LoadingImg src={loadingGif} alt="로딩중" />
         <p>결과를 기다리고 있어요</p>
       </ResultPageLoadingWrapper>
     );
