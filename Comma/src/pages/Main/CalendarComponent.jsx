@@ -101,7 +101,7 @@ function CalendarComponent({ onHasTodayRecordChange }) {
       formatDay={(locale, date) => date.getDate()}
       tileContent={({ date }) => {
         const recordData = getScore(date);
-        const score = recordData ? recordData.score : null;
+        const score = recordData ? Math.round(recordData.score) : null;
         return (
           <div
             className="energy-circle"
