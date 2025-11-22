@@ -442,7 +442,7 @@ export default function MyPage() {
       const token = localStorage.getItem("token");
       if (!token) return;
       try {
-        const res = await fetch("http://3.36.228.115:8080/api/users/me", {
+        const res = await fetch("/api/users/me", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -479,14 +479,11 @@ export default function MyPage() {
         period: periodParam,
         date: dateParam,
       }).toString();
-      const res = await fetch(
-        `https://shim.syu-likelion.org/api/users/me/status?${query}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`/api/users/me/status?${query}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (res.ok) {
         const resJson = await res.json();
         setStat(resJson.data);

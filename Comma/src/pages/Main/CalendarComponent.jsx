@@ -35,14 +35,11 @@ function CalendarComponent({ onHasTodayRecordChange }) {
       const month = date.getMonth() + 1;
 
       try {
-        const res = await fetch(
-          `http://3.36.228.115:8080/api/records?year=${year}&month=${month}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const res = await fetch(`/api/records?year=${year}&month=${month}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
         const json = await res.json().catch(() => null);
 

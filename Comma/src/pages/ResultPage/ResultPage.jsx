@@ -165,13 +165,9 @@ export default function SurveyResultPage() {
       try {
         const token = localStorage.getItem("token");
         const body = getRequestBody();
-        const response = await axios.post(
-          "https://shim.syu-likelion.org/api/records",
-          body,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await axios.post("/api/records", body, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setResult(response.data.data);
       } catch (e) {
         setError(
