@@ -7,6 +7,7 @@ function CalendarComponent({ onHasTodayRecordChange }) {
   const navigate = useNavigate();
   const [scores, setScores] = useState({});
   const [date, setDate] = useState(new Date());
+  const [hasTodayRecord, setHasTodayRecord] = useState(false);
 
   // 해당 날짜의 id와 점수 반환
   function getScore(date) {
@@ -61,6 +62,15 @@ function CalendarComponent({ onHasTodayRecordChange }) {
           };
         });
         setScores(scoreMap);
+
+        // 오늘 기록 존재 여부 계산
+        const today = new Date();
+        if (year === today.getFullYear() && month === today.getMonth() + 1) {
+          const mm = String(month).padStart(2, "0");
+          const dd = String(today.getDate()).padStart(2, "0");
+          const todayKey = `${year}-${mm}-${dd}`;
+          setHasTodayRecord(!!scoreMap[todayKey]);
+        }
       } catch (err) {
         console.error("서버 통신 실패 또는 네트워크 에러:", err);
         setScores({}); // 실서비스에서는 빈 데이터로!
@@ -70,11 +80,18 @@ function CalendarComponent({ onHasTodayRecordChange }) {
     fetchScores();
   }, [date]);
 
-  // 오늘 기록 존재 여부를 부모에게 알려줌 -> 기록 버튼 유무 결정
+  // 부모 콜백 호출: 오늘이 속한 달을 보고 있을 때만 부모에게 전달
   useEffect(() => {
-    const hasRecord = !!getScore(new Date());
-    onHasTodayRecordChange(hasRecord);
-  }, [scores]);
+    const today = new Date();
+    const isCurrentMonth =
+      today.getFullYear() === date.getFullYear() &&
+      today.getMonth() === date.getMonth();
+
+    if (isCurrentMonth) {
+      onHasTodayRecordChange(hasTodayRecord);
+    }
+    // isCurrentMonth가 false일 때는 부모 상태 유지(호출하지 않음)
+  }, [hasTodayRecord, date, onHasTodayRecordChange]);
 
   return (
     <Calendar
